@@ -336,12 +336,12 @@ public class Vista extends javax.swing.JFrame {
 		algoritmo.inicializa();
 		algoritmo.evaluarPoblacion(cmax);
 		for (int i = 0; i < numGeneraciones; i++) {
-			algoritmo.seleccionarElite();
+			algoritmo.seleccionarElite(minMax);
 			algoritmo.seleccion(true);
 			algoritmo.cruzar();
 			algoritmo.mutacion();
 
-                        algoritmo.incluirElite();
+                        algoritmo.incluirElite(minMax);
                         
 			algoritmo.aumentarGeneracion();
 			algoritmo.evaluarPoblacion(cmax);

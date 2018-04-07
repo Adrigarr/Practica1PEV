@@ -430,7 +430,7 @@ public class AGenetico {
      * @param cromosoma
      * @return
      */
-    public double calcularFitness(Cromosoma cromosoma) { //WIP
+    public double calcularFitness(Cromosoma cromosoma) {
         double valor = 0;
         cromosoma.calculaFenotipo();
         switch (this.tipo) {
@@ -609,63 +609,42 @@ public class AGenetico {
     }
     /**
      * mete la elite seleccionada en la poblacion
+     * @param minMax indica si la función es de maximizacion (true) o de minimizacion (false)
      */
-    public void incluirElite() { //WIP
+    public void incluirElite(boolean minMax) {
     	int numeroEliteSeleccionada = (int) (this.tamPoblacion * this.elitismo);
     	this.ordenarPoblacion(0, this.tamPoblacion-1);
         
-    	switch(this.tipo) {
-    	case "F1":
-    		for (int i = 0; i < numeroEliteSeleccionada; i++)
-    			this.poblacion[i] = duplicarCromosoma(this.eliteSeleccionada.get(i));
-    		break;
-    	case "F2":
-    		for (int i = 1; i <= numeroEliteSeleccionada; i++)
-    			this.poblacion[this.tamPoblacion-i] = duplicarCromosoma(this.eliteSeleccionada.get(i-1));
-    		break;
-    	case "F3":
-    		for (int i = 0; i < numeroEliteSeleccionada; i++)
-    			this.poblacion[i] = duplicarCromosoma(this.eliteSeleccionada.get(i));
-    		break;
-    	case "F4":
-    		for (int i = 1; i <= numeroEliteSeleccionada; i++)
-    			this.poblacion[this.tamPoblacion-i] = duplicarCromosoma(this.eliteSeleccionada.get(i-1));
-    		break;
-    	case "F5":
-    		for (int i = 1; i <= numeroEliteSeleccionada; i++)
-    			this.poblacion[this.tamPoblacion-i] = duplicarCromosoma(this.eliteSeleccionada.get(i-1));
-    		break;
-    	}
+        if(minMax){
+            for (int i = 0; i < numeroEliteSeleccionada; i++)
+                    this.poblacion[i] = duplicarCromosoma(this.eliteSeleccionada.get(i));
+        }
+        
+        else {
+            for (int i = 1; i <= numeroEliteSeleccionada; i++)
+                    this.poblacion[this.tamPoblacion-i] = duplicarCromosoma(this.eliteSeleccionada.get(i-1));
+        }
+
     }
     /**
      * selecciona la elite de una poblacion
+     * @param minMax indica si la función es de maximizacion (true) o de minimizacion (false)
      */
-    public void seleccionarElite() { //WIP
+    public void seleccionarElite(boolean minMax) {
     	int numeroeliteSeleccionada = (int) (this.tamPoblacion * this.elitismo);
     	this.ordenarPoblacion(0, this.tamPoblacion-1);
     	this.eliteSeleccionada.clear();
-    	switch(this.tipo) {
-    	case "F1":
-    		for (int i = 1 ; i <= numeroeliteSeleccionada; i++)
-    			this.eliteSeleccionada.add(duplicarCromosoma(this.poblacion[this.tamPoblacion-i]));
-    		break;
-    	case "F2":
-    		for (int i = 0 ; i < numeroeliteSeleccionada; i++)
-    			this.eliteSeleccionada.add(duplicarCromosoma(this.poblacion[i]));
-    		break;
-    	case "F3":
-    		for (int i = 1; i <= numeroeliteSeleccionada; i++)
-    			this.eliteSeleccionada.add(duplicarCromosoma(this.poblacion[this.tamPoblacion-i]));
-    		break;
-    	case "F4":
-    		for (int i = 0 ; i < numeroeliteSeleccionada; i++)
-    			this.eliteSeleccionada.add(duplicarCromosoma(this.poblacion[i]));
-    		break;
-    	case "F5":
-    		for (int i = 0 ; i < numeroeliteSeleccionada; i++)
-    			this.eliteSeleccionada.add(duplicarCromosoma(this.poblacion[i]));
-    		break;
-    	}
+
+        if (minMax) {
+            for (int i = 1 ; i <= numeroeliteSeleccionada; i++)
+                    this.eliteSeleccionada.add(duplicarCromosoma(this.poblacion[this.tamPoblacion-i]));
+        }
+
+        else {
+            for (int i = 0 ; i < numeroeliteSeleccionada; i++)
+                    this.eliteSeleccionada.add(duplicarCromosoma(this.poblacion[i]));
+        }
+
     }
     /**
      * cruce de cromosomas en un punto
