@@ -296,6 +296,7 @@ public class Vista extends javax.swing.JFrame {
 		Selectores selector;
 		String funcion;
                 boolean minMax = false;
+                double cmax = -1000;
 
 		AGenetico algoritmo;
 
@@ -330,18 +331,20 @@ public class Vista extends javax.swing.JFrame {
                 
                 if(funcion == "F1" || funcion == "F3")
                     minMax = true;
+                
 
 		algoritmo.inicializa();
-		algoritmo.evaluarPoblacion();
+		algoritmo.evaluarPoblacion(cmax);
 		for (int i = 0; i < numGeneraciones; i++) {
 			algoritmo.seleccionarElite();
-			algoritmo.seleccion(minMax);
+			algoritmo.seleccion(true);
 			algoritmo.cruzar();
 			algoritmo.mutacion();
 
                         algoritmo.incluirElite();
+                        
 			algoritmo.aumentarGeneracion();
-			algoritmo.evaluarPoblacion();
+			algoritmo.evaluarPoblacion(cmax);
 		}
 
 		this.mejorAbsolutoText.setText("Mejor absoluto: " + algoritmo.getMejor().getFitness());
