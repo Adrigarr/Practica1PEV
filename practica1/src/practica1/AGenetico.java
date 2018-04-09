@@ -50,99 +50,6 @@ public class AGenetico {
 
     
     /**
-     * constructora para las funciones 1,2,3 con el selector de combatientes
-     * por defecto 2
-     * @param tamPoblacion
-     * @param numGeneraciones
-     * @param probabilidadCruce
-     * @param probabilidadMutacion
-     * @param tolerancia
-     * @param selector
-     * @param funcion
-     */
-    public AGenetico(int tamPoblacion, int numGeneraciones, double probabilidadCruce, double probabilidadMutacion,
-            double tolerancia, Selectores selector, String funcion, double elitismo) {
-        this.tamPoblacion = tamPoblacion;
-        this.numGeneraciones = numGeneraciones;
-        this.mejor = null;
-        this.probabilidadCruce = probabilidadCruce;
-        this.probabilidadMutacion = probabilidadMutacion;
-        this.tolerancia = tolerancia;
-        this.selector = selector;
-        this.tipo = funcion;
-        this.numeroCombatientes = 2;
-        this.elitismo = elitismo;
-        this.eliteSeleccionada = new ArrayList<Cromosoma>();
-        this.mejoresAbsolutos = new double[this.numGeneraciones];
-        this.mejoresGeneracion = new double[this.numGeneraciones];
-        this.medias = new double[this.numGeneraciones];
-    }
-    /**
-     * constructora para las funciones 1,2 y 3 con numero de combatientes
-     * eliteSeleccionada
-     * @param tamPoblacion
-     * @param numGeneraciones
-     * @param probabilidadCruce
-     * @param probabilidadMutacion
-     * @param tolerancia
-     * @param selector
-     * @param funcion
-     * @param numCombatientes
-     */
-    public AGenetico(int tamPoblacion, int numGeneraciones, double probabilidadCruce, double probabilidadMutacion,
-            double tolerancia, Selectores selector, String funcion,
-            int numCombatientes, double elitismo) {
-        this.tamPoblacion = tamPoblacion;
-        this.numGeneraciones = numGeneraciones;
-        this.mejor = null;
-        this.probabilidadCruce = probabilidadCruce;
-        this.probabilidadMutacion = probabilidadMutacion;
-        this.tolerancia = tolerancia;
-        this.selector = selector;
-        this.tipo = funcion;
-        this.numeroCombatientes = numCombatientes;
-        this.elitismo = elitismo;
-        this.eliteSeleccionada = new ArrayList<Cromosoma>();
-        this.mejoresAbsolutos = new double[this.numGeneraciones];
-        this.mejoresGeneracion = new double[this.numGeneraciones];
-        this.medias = new double[this.numGeneraciones];
-    }
-    
-    /**
-     * constructora para la funcion 5 con numero de combatientes 
-     * por defecto 2
-     * @param tamPoblacion
-     * @param numGeneraciones
-     * @param probabilidadCruce
-     * @param probabilidadMutacion
-     * @param tolerancia
-     * @param selector
-     * @param numGenes
-     * @param funcion
-     */
-    
-    public AGenetico(int tamPoblacion, int numGeneraciones, double probabilidadCruce, double probabilidadMutacion,
-            double tolerancia, Selectores selector,int numGenes,
-            String funcion, double elitismo) {
-        this.tamPoblacion = tamPoblacion;
-        this.numGeneraciones = numGeneraciones;
-        this.mejor = null;
-        this.probabilidadCruce = probabilidadCruce;
-        this.probabilidadMutacion = probabilidadMutacion;
-        this.tolerancia = tolerancia;
-        this.selector = selector;
-        this.tipo = funcion;
-        this.numGenes = numGenes;
-        this.numeroCombatientes = 2;
-        this.elitismo = elitismo;
-        this.eliteSeleccionada = new ArrayList<Cromosoma>();
-        this.mejoresAbsolutos = new double[this.numGeneraciones];
-        this.mejoresGeneracion = new double[this.numGeneraciones];
-        this.medias = new double[this.numGeneraciones];
-    }
-
-    
-    /**
      * Constructora que se utiliza en la funcion 5 con numero de 
      * combatientes eliteSeleccionada
      * @param tamPoblacion
@@ -157,7 +64,7 @@ public class AGenetico {
      */
     public AGenetico(int tamPoblacion, int numGeneraciones, double probabilidadCruce, double probabilidadMutacion,
             double tolerancia, Selectores selector, int numeroCombatientes,
-            String funcion, int numGenes, double elitismo) {
+            int numGenes, String funcion, double elitismo) {
         this.tamPoblacion = tamPoblacion;
         this.numGeneraciones = numGeneraciones;
         this.mejor = null;
@@ -287,19 +194,23 @@ public class AGenetico {
         for (int i = 0; i < this.tamPoblacion; i++) {
             //calculamos el total
             total += this.cromosomasEvaluados[i];
-
+        }
+        
+        for (int i = 0; i < this.tamPoblacion; i++) {
             //calculamos las partes de cada cromosoma
             ruleta[i] = this.cromosomasEvaluados[i] / total;
         }
+        
         //sumamos el valor acumulado
         for (int i = 1; i < this.tamPoblacion; i++) {
             ruleta[i] = ruleta[i] + ruleta[i - 1];
         }
+        
         //elegimos la nueva poblacion
         for (int i = 0; i < this.tamPoblacion; i++) {
             aleatorio = Math.random();
             int j = 0;
-            while (!encontrado) {
+            while (!encontrado && j < this.tamPoblacion) {
                 if (aleatorio < ruleta[j]) {
                     generacionNueva[i] = duplicarCromosoma(this.poblacion[j]);
                     encontrado = true;
@@ -324,11 +235,12 @@ public class AGenetico {
         for (int i = 0; i < this.tamPoblacion; i++) {
             //calculamos el total
             total += this.cromosomasEvaluados[i];
-            
+        }
+        
+        for (int i = 0; i < this.tamPoblacion; i++) {
             //calculamos los valores de cada individuo
             valores[i] = this.cromosomasEvaluados[i] / total;
-            
-            
+   
         }
         
         //calculamos los valores acumulados
@@ -358,7 +270,7 @@ public class AGenetico {
      * @param elementos
      * @param tipo indica si la función es de maximizacion (true) o de minimizacion (false)
      */
-    private void seleccionTorneo(int elementos, boolean tipo) {
+    private void seleccionTorneo(int elementos, boolean tipo) { //WIP
         
         Cromosoma[] generacionNueva = new Cromosoma[this.tamPoblacion];
         int posicionElegido = -1;
@@ -461,13 +373,12 @@ public class AGenetico {
     /**
      * evalua a la poblacion segun su fitness y va guardando los mejores y las medias
      */
-    public void evaluarPoblacion(double cmax) { //WIP
-    	double mejorGeneracion = 0;//
+    public void evaluarPoblacion(double cmax) {
+    	double mejorGeneracion = this.poblacion[0].getFitness(); //this.cromosomasEvaluados[0];
         switch (this.tipo) {
             case "F1":
                 for (int i = 0; i < this.tamPoblacion; i++) {
                     this.cromosomasEvaluados[i] = calcularFitness(this.poblacion[i]);
-                    //System.out.println("Generacion: " + i + " - Fitness: " + this.cromosomasEvaluados[i]);
                
                     if (this.cromosomasEvaluados[i] > this.mejor.getFitness())
                         this.mejor = this.duplicarCromosoma(poblacion[i]);
@@ -498,12 +409,16 @@ public class AGenetico {
             case "F3":
                 for (int i = 0; i < this.tamPoblacion; i++) {
                     this.cromosomasEvaluados[i] = calcularFitness(this.poblacion[i]);
+                System.out.println(this.cromosomasEvaluados[i]);
                 
                     if (this.cromosomasEvaluados[i] > this.mejor.getFitness())
                     	this.mejor = this.duplicarCromosoma(poblacion[i]);
+
                     
                     if (this.cromosomasEvaluados[i] > mejorGeneracion)
                     	mejorGeneracion = this.cromosomasEvaluados[i];
+                    
+                    System.out.println("Mejor de la generacion: " + mejorGeneracion);
                 }
                 
                 break;
@@ -546,6 +461,7 @@ public class AGenetico {
     public void desplazar(boolean minMax, double cmax) {
         if (!minMax) { //En una funcion de minimizacion
             
+            // Obtenemos el mejor fitness de la generacion actual
             for (int i = 0; i < this.tamPoblacion; i++){
                 if (this.cromosomasEvaluados[i] > cmax)
                     	cmax = this.cromosomasEvaluados[i];
@@ -556,8 +472,12 @@ public class AGenetico {
             
             for (int i = 0; i < this.tamPoblacion; i++){
                 this.cromosomasEvaluados[i] = cmax - this.cromosomasEvaluados[i];
+                //System.out.println("Generacion: " + i + " - Fitness: " + this.cromosomasEvaluados[i]);
+                
                 this.poblacion[i].setFitness(this.cromosomasEvaluados[i]);
             }
+            
+            this.mejor.setFitness(cmax - this.mejor.getFitness());
         }
     }
     
@@ -616,8 +536,9 @@ public class AGenetico {
     	this.ordenarPoblacion(0, this.tamPoblacion-1);
         
         if(minMax){
-            for (int i = 0; i < numeroEliteSeleccionada; i++)
+            for (int i = 0; i < numeroEliteSeleccionada; i++) {
                     this.poblacion[i] = duplicarCromosoma(this.eliteSeleccionada.get(i));
+            }
         }
         
         else {
@@ -712,45 +633,31 @@ public class AGenetico {
      * @param c
      * @return
      */
-    public Cromosoma duplicarCromosoma(Cromosoma c) { //WIP
+    public Cromosoma duplicarCromosoma(Cromosoma c) {
     	Cromosoma nuevo = null ;
     	switch(this.tipo) {
     	case "F1":
     		nuevo = new Cromosoma1(this.tolerancia);
-    		nuevo.setFitness(c.getFitness());
-    		nuevo.setIndividuo(c.getIndividuo());
-    		nuevo.setPuntAcumulada(c.getPuntAcumulada());
-    		nuevo.calculaFenotipo();
     		break;
     	case "F2":
     		nuevo = new Cromosoma2(this.tolerancia);
-    		nuevo.setFitness(c.getFitness());
-    		nuevo.setIndividuo(c.getIndividuo());
-    		nuevo.setPuntAcumulada(c.getPuntAcumulada());
-    		nuevo.calculaFenotipo();
     		break;
     	case "F3":
     		nuevo = new Cromosoma3(this.tolerancia);
-    		nuevo.setFitness(c.getFitness());
-    		nuevo.setIndividuo(c.getIndividuo());
-    		nuevo.setPuntAcumulada(c.getPuntAcumulada());
-    		nuevo.calculaFenotipo();
     		break;
     	case "F4":
     		nuevo = new Cromosoma4(this.tolerancia);
-    		nuevo.setFitness(c.getFitness());
-    		nuevo.setIndividuo(c.getIndividuo());
-    		nuevo.setPuntAcumulada(c.getPuntAcumulada());
-    		nuevo.calculaFenotipo();
     		break;
     	case "F5":
     		nuevo = new Cromosoma5(this.tolerancia, this.numGenes);
-    		nuevo.setFitness(c.getFitness());
-    		nuevo.setIndividuo(c.getIndividuo());
-    		nuevo.setPuntAcumulada(c.getPuntAcumulada());
-    		nuevo.calculaFenotipo();
     		break;
     	}
+        
+        nuevo.setFitness(c.getFitness());
+        nuevo.setIndividuo(c.getIndividuo());
+        nuevo.setPuntAcumulada(c.getPuntAcumulada());
+        nuevo.calculaFenotipo();
+                
     	return nuevo;
     }
 }
