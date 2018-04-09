@@ -118,8 +118,9 @@ public abstract class Cromosoma implements Comparable{
      * muta el cromosoma
      * @param probabilidad
      */
-    public void mutar(double probabilidad) {
+    public void mutar(double probabilidad) { //WIP
         double valor;
+
         for (int i = 0; i < this.individuo.length; i++) {
             valor = Math.random();
             if (valor <= probabilidad) {
