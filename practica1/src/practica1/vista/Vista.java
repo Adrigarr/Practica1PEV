@@ -49,19 +49,19 @@ public class Vista extends javax.swing.JFrame {
         tamPoblacionText = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         numGeneracionesText = new javax.swing.JTextField();
-        funcionBox = new javax.swing.JComboBox<String>();
+        funcionBox = new javax.swing.JComboBox<>();
         porcentajeCrucesText = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         porcentajeMutacionesText = new javax.swing.JTextField();
-        numGenesBox = new javax.swing.JComboBox<String>();
+        numGenesBox = new javax.swing.JComboBox<>();
         precisionText = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         graficaPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Algoritmo genetico");
+        setTitle("Algoritmo genético");
 
-        evaluarButton.setText("Evaluar poblacion");
+        evaluarButton.setText("Evaluar población");
         evaluarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 evaluarButtonActionPerformed(evt);
@@ -83,7 +83,7 @@ public class Vista extends javax.swing.JFrame {
 
         jLabel6.setText("Elitismo:");
 
-        jLabel1.setText("Tamanyo de poblacion:");
+        jLabel1.setText("Tamaño de población:");
 
         elitismoText.setText("0.02");
         elitismoText.setToolTipText("");
@@ -93,9 +93,9 @@ public class Vista extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Numero de generaciones:");
+        jLabel2.setText("Número de generaciones:");
 
-        jLabel7.setText("Tipo de seleccion:");
+        jLabel7.setText("Tipo de selección:");
 
         jLabel3.setText("Porcentaje de cruces:");
 
@@ -115,24 +115,24 @@ public class Vista extends javax.swing.JFrame {
             }
         });
 
-        jLabel8.setText("Funcion:");
+        jLabel8.setText("Función:");
 
         numGeneracionesText.setText("100");
 
-        funcionBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "F1", "F2", "F3", "F4", "F5" }));
+        funcionBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "F1", "F2", "F3", "F4", "F5" }));
 
-        porcentajeCrucesText.setText("0.6");
+        porcentajeCrucesText.setText("0");
         porcentajeCrucesText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 porcentajeCrucesTextActionPerformed(evt);
             }
         });
 
-        jLabel9.setText("Numero de genes:");
+        jLabel9.setText("Número de genes:");
 
-        porcentajeMutacionesText.setText("0.05");
+        porcentajeMutacionesText.setText("0");
 
-        numGenesBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7" }));
+        numGenesBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2", "3" }));
 
         precisionText.setText("0.001");
         precisionText.addActionListener(new java.awt.event.ActionListener() {
@@ -141,7 +141,7 @@ public class Vista extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setText("Precision:");
+        jLabel5.setText("Precisión:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -320,14 +320,10 @@ public class Vista extends javax.swing.JFrame {
 			return;
 		}
 
-		if (funcion == "F5") {
-			algoritmo = new AGenetico(tamPoblacion, numGeneraciones, probabilidadCruce, probabilidadMutacion,
-					tolerancia, selector, numGenes, funcion, elitismo);
 
-		} else {
-			algoritmo = new AGenetico(tamPoblacion, numGeneraciones, probabilidadCruce, probabilidadMutacion,
-					tolerancia, selector, funcion, elitismo);
-		}
+                algoritmo = new AGenetico(tamPoblacion, numGeneraciones, probabilidadCruce, probabilidadMutacion,
+					tolerancia, selector, 2, numGenes, funcion, elitismo);
+
                 
                 if(funcion == "F1" || funcion == "F3")
                     minMax = true;
@@ -337,7 +333,7 @@ public class Vista extends javax.swing.JFrame {
 		algoritmo.evaluarPoblacion(cmax);
 		for (int i = 0; i < numGeneraciones; i++) {
 			algoritmo.seleccionarElite(minMax);
-			algoritmo.seleccion(true);
+			algoritmo.seleccion(minMax);
 			algoritmo.cruzar();
 			algoritmo.mutacion();
 
@@ -346,8 +342,11 @@ public class Vista extends javax.swing.JFrame {
 			algoritmo.aumentarGeneracion();
 			algoritmo.evaluarPoblacion(cmax);
 		}
-
-		this.mejorAbsolutoText.setText("Mejor absoluto: " + algoritmo.getMejor().getFitness());
+                
+                
+                this.mejorAbsolutoText.setText("Mejor absoluto: " + algoritmo.getMejor().getFitness());
+                
+		
 
 		// define your data
 		double[] x = new double[numGeneraciones];
